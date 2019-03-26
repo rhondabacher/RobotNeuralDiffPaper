@@ -3,16 +3,16 @@
 
 This repository contains 
 
-1. Tode to reproduce the analyses and figures in "Automated High Frequency Sampling of Stem Cell Differentiation Reveals Early Stage Divergence of Human and Mouse Gene Expression Kinetics". These are all preprocessing steps and includes the generation of figures in the main text and supplement. 
+1. Code to reproduce the analyses and figures in "Automated High Frequency Sampling of Stem Cell Differentiation Reveals Early Stage Divergence of Human and Mouse Gene Expression Kinetics". This includes all preprocessing steps and the generation of figures in the main text and supplement. 
 
 2. Trendy output files that can be uploaded to the Trendy shiny application and instructions page.
 
-[Analysis was done using the Trendy R package.](https://github.com/rhondabacher/Trendy)
+[Analysis was done using the Trendy R package, available at Bioconductor]: https://bioconductor.org/packages/release/bioc/html/Trendy.html
 
 
 # Instructions to view data in Trendy Shiny app
 
-### For instructions with screenshots see this page: 
+### For instructions with screenshots see this page: https://github.com/rhondabacher/RobotSeq/blob/master/TrendyShinyInstructions.pdf
 
 
 1. Click on the folder "RDATA" above. Then click on the dataset you want to view. Then click "Download".
