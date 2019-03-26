@@ -17,15 +17,15 @@ Analysis was done using the Trendy R package, available at Bioconductor:
 ### For instructions with screenshots see this page: https://github.com/rhondabacher/RobotSeq/blob/master/TrendyShinyInstructions.pdf
 
 
-1. Click on the folder "RDATA" above. Then click on the dataset you want to view. Then click "Download".
+1. Click on the folder "TrendyShiny" above. Then click on the dataset you want to view. Then click "Download".
 
-2. Assuming you have R installed already, type in:
+2. Assuming you have R installed already, type in the following to install Trendy:
 
 library(BiocManager)
 if (!requireNamespace("BiocManager", quietly=TRUE)) install.packages("BiocManager")
 BiocManager::install("Trendy")
 
-3. To run the Trendy Shiny App type in:
+3. To run the Trendy Shiny App, type in:
 
 library(Trendy)
 trendyShiny()
