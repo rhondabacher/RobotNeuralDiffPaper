@@ -8,7 +8,8 @@ This repository contains
 2. Trendy output files that can be uploaded to the Trendy shiny application and instructions page.
 
 Analysis was done using the Trendy R package, available at Bioconductor:
-[https://bioconductor.org/packages/release/bioc/html/Trendy.html] (https://bioconductor.org/packages/release/bioc/html/Trendy.html)
+
+[https://bioconductor.org/packages/release/bioc/html/Trendy.html](https://bioconductor.org/packages/release/bioc/html/Trendy.html)
 
 
 # Instructions to view data in Trendy Shiny app
