@@ -1,4 +1,4 @@
-# Scripts for the minutely robot RNA-seq manuscript
+# Scripts for the minute scale robot RNA-seq manuscript
 
 
 This repository contains 
@@ -37,7 +37,11 @@ trendyShiny()
 
 4. A webpage will open and will ask you to select the file you want to upload. 
 
+### Questions
 
+Any questions may be reported using Github issues: https://github.com/rhondabacher/RobotSeq/issues
+
+or emailing Rhonda Bacher at rbacher@ufl.edu
 
 # License
 
