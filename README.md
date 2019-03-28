@@ -45,4 +45,4 @@ or emailing Rhonda Bacher at rbacher@ufl.edu
 
 # License
 
-Licensed under GPL-3.
+Licensed under [https://github.com/rhondabacher/RobotSeq/blob/master/LICENSE.md](GPL-3).
