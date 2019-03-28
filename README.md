@@ -14,8 +14,6 @@ Analysis was done using the Trendy R package, available at Bioconductor:
 
 # Instructions to view data in Trendy Shiny app
 
-### For instructions with screenshots see this page: https://github.com/rhondabacher/RobotSeq/blob/master/TrendyShinyInstructions.pdf
-
 
 1. Click on the folder "TrendyShiny" above. Then click on the dataset you want to view. Then click "Download".
 
@@ -36,6 +34,11 @@ trendyShiny()
 ```
 
 4. A webpage will open and will ask you to select the file you want to upload. 
+
+
+### For instructions with screenshots see this page: https://github.com/rhondabacher/RobotSeq/blob/master/TrendyShinyInstructions.pdf
+
+
 
 ### Questions
 
