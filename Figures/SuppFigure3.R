@@ -9,7 +9,7 @@ data.norm.m <- data.norm
 data.norm.scale.m <- data.norm.scale
 t.v.m <- t.v
 
-load("OUT2/RDATA/run_trendy_inVitro_mouse_both.Rdata")
+load("RDATA/trendy_run_human_InVitro.Rdata")
 seg.human <- ready.trendy.scaled
 data.norm.h <- data.norm
 data.norm.scale.h <- data.norm.scale

@@ -30,13 +30,13 @@ print(t.v)
 ############# Trendy ##########
 library(Trendy)
 
-seg.all <- trendy(Data = data.norm, tVectIn = t.v, saveObject = TRUE, fileName = "RDATA/MouseInVitro", pvalCut = .2, maxK = 5, minNumInSeg = 3, meanCut = 10)
+seg.all <- trendy(Data = data.norm, tVectIn = t.v, saveObject = TRUE, fileName = "OUT/MouseInVitro", pvalCut = .2, maxK = 5, minNumInSeg = 3, meanCut = 10)
 ready.trendy <- results(seg.all)
 
 data.norm.filter <- data.norm[which(rowMeans(data.norm) >= 10), ]
 data.norm.scale <- t(apply(data.norm.filter, MARGIN = 1, FUN = function(X) (X - min(X))/diff(range(X))))
 
-seg.all.scaled <- trendy(Data = data.norm.scale, tVectIn = t.v, saveObject = TRUE, fileName = "RDATA/MouseInVitro_Scaled0to1", pvalCut = .2, maxK = 5, minNumInSeg = 3, meanCut = -Inf)
+seg.all.scaled <- trendy(Data = data.norm.scale, tVectIn = t.v, saveObject = TRUE, fileName = "OUT/MouseInVitro_scaled0to1", pvalCut = .2, maxK = 5, minNumInSeg = 3, meanCut = -Inf)
 
 ready.trendy.scaled <- results(seg.all.scaled)
 
@@ -74,13 +74,13 @@ print(t.v)
 ############# Trendy ##########
 library(Trendy)
 
-seg.all <- trendy(Data = data.norm, tVectIn = t.v, saveObject = TRUE, fileName = "RDATA/HumanInVitro", pvalCut = .2, maxK = 5, minNumInSeg = 3, meanCut = 10)
+seg.all <- trendy(Data = data.norm, tVectIn = t.v, saveObject = TRUE, fileName = "OUT/HumanInVitro", pvalCut = .2, maxK = 5, minNumInSeg = 3, meanCut = 10)
 ready.trendy <- results(seg.all)
 
 data.norm.filter <- data.norm[which(rowMeans(data.norm) >= 10), ]
 data.norm.scale <- t(apply(data.norm.filter, MARGIN = 1, FUN = function(X) (X - min(X))/diff(range(X))))
 
-seg.all.scaled <- trendy(Data = data.norm.scale, tVectIn = t.v, saveObject = TRUE, fileName = "RDATA/HumanInVitro_Scaled", pvalCut = .2, maxK = 5, minNumInSeg = 3, meanCut = -Inf)
+seg.all.scaled <- trendy(Data = data.norm.scale, tVectIn = t.v, saveObject = TRUE, fileName = "OUT/HumanInVitro_scaled0to1", pvalCut = .2, maxK = 5, minNumInSeg = 3, meanCut = -Inf)
 
 ready.trendy.scaled <- results(seg.all.scaled)
 

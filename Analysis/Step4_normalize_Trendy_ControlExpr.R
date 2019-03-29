@@ -27,7 +27,7 @@ library(Trendy)
 data.norm.filter <- data.norm[which(rowMeans(data.norm) >= 10), ]
 data.norm.scale <- t(apply(data.norm.filter, MARGIN = 1, FUN = function(X) (X - min(X))/diff(range(X))))
 
-seg.all <- trendy(Data = data.norm.scale, tVectIn = t.v, saveObject = TRUE, fileName = "RDATA/humanControl_Scaled0to1", pvalCut = .2, maxK = 5, meanCut = -Inf)
+seg.all <- trendy(Data = data.norm.scale, tVectIn = t.v, saveObject = TRUE, fileName = "OUT/humanRobotControl_scaled0to1", pvalCut = .2, maxK = 5, meanCut = -Inf)
 
 ready.trendy <- results(seg.all)
 
