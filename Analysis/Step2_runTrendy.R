@@ -27,7 +27,7 @@ data.norm.filter <- data.norm.mouse[which(rowMeans(data.norm.mouse) >= 10), ]
 data.norm.scale <- t(apply(data.norm.filter, MARGIN = 1, FUN = function(X) (X - min(X))/diff(range(X))))
 
 # Adjust the mean filter since we have scaled data:
-seg.all.scaled <- trendy(data.norm.scale, Mean.Cut=-Inf, Max.K = 5, T.Vect=t.v, Pval.Cut = .2, Save.Object=TRUE, File.Name="OUT/Mouse/mouseRobot_scaled0to1")
+seg.all.scaled <- trendy(data.norm.scale, Mean.Cut=-Inf, Max.K = 5, T.Vect=t.v, Pval.Cut = .2, Save.Object=TRUE, File.Name="OUT/mouseRobot_scaled0to1")
 
 save.image("RDATA/trendy_run_mouse_Scaled0to1.RData")
 

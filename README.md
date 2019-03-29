@@ -5,10 +5,10 @@ This repository contains
 
 1. Code to reproduce the analyses and figures in "Automated Minute Scale RNA-seq of Pluripotent Stem Cell Differentiation Reveals Early Divergence of Human and Mouse Gene Expression Kinetics". This includes all preprocessing steps and the generation of figures in the main text and supplement. 
 
-  * Download datasets from GSE129014.
-  * Run all codes in the Analysis folder in the indicated order. Directory set-up is a main folder called RobotSeq with subfolders: RDATA, PLOTS, and OUT.
+    * Download datasets from GSE129014.
+    * Run all codes in the Analysis folder in the indicated order. Directory set-up is a main folder called RobotSeq with subfolders: RDATA, PLOTS, and OUT.
   
-2. Trendy output files that can be uploaded to the Trendy shiny application and instructions page.
+2. The TrendyShiny folder contains files that can be uploaded to the Trendy shiny application for interactive data exploration and analysis.
 
 Analysis was done using the Trendy R package, available at Bioconductor:
 
