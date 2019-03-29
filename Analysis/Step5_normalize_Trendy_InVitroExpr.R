@@ -1,18 +1,16 @@
 setwd("~/RobotSeq/")
 
+# Data from previously published Barry et al. 2017 in GEO: GSE90053
 
 ## Mouse Data:
 
 library(readxl)
-inFile <- "DATA/MouseInVitro.xlsx"
-inData <- read_excel(inFile, sheet=1)
-
-inData[which(duplicated(inData[,1])),1]
-inData[which(inData[,1] == "42430"),1] <- c("42430.1", "42430.2")
-inData[which(inData[,1] == "42431"),1] <- c("42431.1", "42431.2")
+inFile <- "GSE90053_mEpiVH1.RSEM.xlsx"
+inData <- read_excel(inFile, sheet=4)
 
 data.mat <- data.matrix(inData)[,2:17]
 Genes <- c(as.matrix(as.data.frame(inData[,1])))
+rownames(data.mat) <- Genes
 
 library(EBSeq)
 sizes <- MedianNorm(data.mat)
@@ -50,13 +48,10 @@ save.image("RDATA/trendy_run_mouse_InVitro.Rdata")
 ##############################################################################
 
 ## Human Data:
-library(readxl)
-inFile <- "DATA/HumanInVitro.xlsx"
-inData <- read_excel(inFile, sheet=1)
 
-inData[which(duplicated(inData[,1])),1]
-inData[which(inData[,1] == "42431"),1] <- c("42431.1", "42431.2")
-inData[which(inData[,1] == "42430"),1] <- c("42430.1", "42430.2")
+library(readxl)
+inFile <- "GSE90053_mEpiVH1.RSEM.xlsx"
+inData <- read_excel(inFile, sheet=2)
 
 data.mat <- data.matrix(inData)[,2:27]
 Genes <- c(as.matrix(as.data.frame(inData[,1])))

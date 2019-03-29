@@ -2,13 +2,10 @@ setwd("~/RobotSeq/")
 
 load("RDATA/jointPlots_loadDataBoth.Rdata")
 
+# Data downloaded from GSE129014:
 library(readxl)
-inFile <- "DATA/Sub_robot_hg19__6145aa5fa175a408.xlsx"
-inData <- read_excel(inFile, sheet=3)
-
-data.mat <- data.matrix(inData)[,c(123:183)]
-Genes <- as.matrix(as.data.frame(inData[,1], stringsAsFactors=F))
-rownames(data.mat) <- Genes
+inData <- read.table("GSE129014_hg19genes.no_mt.ec.tab", stringsAsFactors=F, header=T, row.names=1, sep="\t")
+data.mat <- data.matrix(inData[,122:182])
   
 library(EBSeq)
 sizes <- MedianNorm(data.mat)
