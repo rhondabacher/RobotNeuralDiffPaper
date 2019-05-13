@@ -3,165 +3,53 @@ setwd("~/RobotSeq/")
 load("RDATA/jointPlots_loadDataBoth.Rdata")
 
 
-## Get Common Peak
+load("RDATA/trendy_run_control_Scaled0to1.Rdata")
+seg.human.control <- ready.trendy
+data.norm.scale.h.control <- data.norm.scale
+t.v.h.control <- t.v 
+
 
 library(Trendy)
-res.top.m <- topTrendy(seg.mouse, .5)
-res.top.h <- topTrendy(seg.human, .5)
 
-peak_genes.m <- peak_genes.m[which(!duplicated(peak_genes.m[,1])),]
-peak_genes.h <- peak_genes.h[which(!duplicated(peak_genes.h[,1])),]
+## Genes in common with control
 
-set1 <- subset(ortho.genes.use, hgnc_symbol %in% peak_genes.h$Gene)
-ortho.peaks <- subset(set1, mgi_symbol %in% peak_genes.m$Gene)
+top.res.h <- topTrendy(seg.human, adjR2Cut = .5)
+top.res.h.control <- topTrendy(seg.human.control, adjR2Cut = .5)
 
+genes.in.common <- intersect(names(top.res.h$AdjustedR2), names(top.res.h.control$AdjustedR2))
+length(genes.in.common)
 
-## Get Common UP
+## Similarity based on start
 
-library(Trendy)
-res.top.m <- topTrendy(seg.mouse, .5)
-res.top.h <- topTrendy(seg.human, .5)
+diff.score <- (top.res.h.control$Segment.Trends[genes.in.common,1] + top.res.h$Segment.Trends[genes.in.common,1])
 
-upgenes.m <- c(names(which(res.top.m$Segment.Trends[,1] == 0 & res.top.m$Segment.Trends[,2] == 1)), 
-                names(which(res.top.m$Segment.Trends[,1] == 1)))
+same.dir <- names(which(abs(diff.score) == 2))
+diff.dir <- setdiff(names(which(abs(diff.score) == 0)), names(which(top.res.h.control$Segment.Trends[genes.in.common,1] == 0)))
 
-upgenes.h <- c(names(which(res.top.h$Segment.Trends[,1] == 0 & res.top.h$Segment.Trends[,2] == 1)), 
-                names(which(res.top.h$Segment.Trends[,1] == 1)))
-
-set1 <- subset(ortho.genes.use, hgnc_symbol %in% upgenes.h)
-ortho.upgenes <- subset(set1, mgi_symbol %in% upgenes.m)
+others <- setdiff(genes.in.common, c(diff.dir,same.dir))
 
 
 
-#################################################################################################################
-#################################################################################################################
-#################################################################################################################
+library(ggsunburst)
 
-## Same as what is in Trendy package but wanted to control par directly. 
-## Will add par control directly to the package soon.
+df <- data.frame(
+  parent = c("Trendy Genes", "Trendy Genes", "Shared", "Shared", "Shared"),
+	node = c("Unique", "Shared", "Similar Direction", "Opposite Direction", "Others"),
+  size = round(c((655/739), (84/739),  29/739, 31/739, 24/739)*100,1)
+  )
 
-fancyPlot2 <- function(DATA, tVectIn, trendyOutData, featureNames) {
-	plot(tVectIn, DATA[featureNames,], pch=20, col="#696969", main=featureNames, ylab="Scaled Expression", xlab="Minute", 
-	           cex.axis=1.4, cex.lab=1.5, xaxt='n', yaxt='n', cex.main=2)
-  axis(1, at=c(0,200,400,600), cex.lab=1.5, cex.axis=1.5)
-  axis(2, at=c(0,.5,1), cex.lab=1.5, cex.axis=1.5)
-	trendyOutData <- trendyOutData[[featureNames]]
-	lines(tVectIn, trendyOutData$Fitted.Values, lwd = 3, col="#ededed")
-	abline(v = trendyOutData$Breakpoints, lty = 2, lwd = 3, col="chartreuse3")
-	ID <- trendyOutData$Trends
-	FIT <- trendyOutData$Fitted.Values
-	BKS <- c(0, trendyOutData$Breakpoints, max(tVectIn))
-	if (length(BKS) > 3 | (length(BKS) == 3 & !is.na(BKS[2]))) {
-	   for (i in seq_len(length(BKS) - 1)) {
-	       toCol <- which(tVectIn <= BKS[i+1] & tVectIn >= BKS[i])
-	       IDseg <- ID[toCol]
-	       useCol <- switch(names(which.max(table(IDseg))), 
-	       "0" = "black", 
-	       "-1" = "cornflowerblue", 
-	       "1" = "coral1")
-	       lines(tVectIn[toCol], FIT[toCol], lwd = 5, col=useCol)
-	   }}else {
-							   IDseg <- ID[1]
-						       useCol <- switch(names(which.max(table(IDseg))), 
-						       "0" = "black", 
-						       "-1" = "cornflowerblue", 
-						       "1" = "coral1")
-							   	lines(tVectIn, FIT, lwd = 5, col=useCol)
-						   }
-						 
-		 
-	   par(fig = c(0, 1, 0, 1), oma = c(0, 0, 0, 0), 
-	       mar = c(0, 0, 4, 0), new = TRUE)
-	   plot(0, 0, type = "n", bty = "n", xaxt = "n", yaxt = "n")
+# write data.frame into csv file
+write.table(df, file = 'df.csv', row.names = F, sep = ",")
 
-	
-}
-################################################################################################################
-################################################################################################################
+# generate data structure
+sb <- sunburst_data('df.csv', type = 'node_parent', sep = ",", node_attributes = c("size"))
 
-# Up trend examples:
 
-pdf("PLOTS/Mouse_OrthologGenes_ExpressionScatter_HSPA8_SuppFig1.pdf", height=4.5, width=6.5, useDingbats=FALSE)
-par(mfrow=c(1,1), cex=1.5, cex.lab=1.2, cex.axis=1.2, cex.main=1.1, mar=c(4,4,2,1), mgp=c(2.5,1,0))
-XX<- fancyPlot2(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = "Hspa8", 
-            trendyOutData = seg.mouse)
+pdf("PLOTS/pieChart_sharedGenes_SuppFig2.pdf", height=10, width=10)
+par(mar=c(1,2,2,1))
+p <- sunburst(sb, rects.fill.aes = "name", node_labels = T) +  scale_fill_brewer(palette = "Set3")  
+p + geom_text(data = sb$leaf_labels,
+    aes(x=x, y=0.1, label=paste(size,"%"), angle=0, hjust=1, vjust=-.5), size = 5)+ 
+		geom_text(data = sb$node_labels,
+    aes(x=x, y=0.1, label=label, vjust=c(1,-4)), size = 5)+ guides(fill=FALSE)
 dev.off()
-
-pdf("PLOTS/Mouse_OrthologGenes_ExpressionScatter_HSPA14_uppFig1.pdf", height=4.5, width=6.5, useDingbats=FALSE)
-par(mfrow=c(1,1), cex=1.5, cex.lab=1.2, cex.axis=1.2, cex.main=1.1, mar=c(4,4,2,1), mgp=c(2.5,1,0))
-XX<- fancyPlot2(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = "Hspa14", 
-            trendyOutData = seg.mouse)
-dev.off()
-
-
-pdf("PLOTS/Mouse_OrthologGenes_ExpressionScatter_IVNS1ABP_SuppFig1.pdf", height=4.5, width=6.5, useDingbats=FALSE)
-par(mfrow=c(1,1), cex=1.5, cex.lab=1.2, cex.axis=1.2, cex.main=1.1, mar=c(4,4,2,1), mgp=c(2.5,1,0))
-XX<- fancyPlot2(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = "Ivns1abp", 
-            trendyOutData = seg.mouse)
-dev.off()
-
-
-pdf("PLOTS/Mouse_OrthologGenes_ExpressionScatter_MCM7_SuppFig1.pdf", height=4.5, width=6.5, useDingbats=FALSE)
-par(mfrow=c(1,1), cex=1.5, cex.lab=1.2, cex.axis=1.2, cex.main=1.1, mar=c(4,4,2,1), mgp=c(2.5,1,0))
-XX<- fancyPlot2(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = "Mcm7", 
-            trendyOutData = seg.mouse)
-dev.off()
-
-
-
-# Time of max expression for Up genes:
-peak.com.m <- ortho.upgenes$mgi_symbol
-whichTime.up.m<-c()
-for(i in 1:length(peak.com.m)) {
-	keepT <- which(res.top.m$Segment.Trends[peak.com.m[i],] != 1)[1]
-	
-	if(is.na(keepT)) {
-		whichTime.up.m[i] <- 600
-	} else if (keepT==1) {
-		keepT <- which(res.top.m$Segment.Trends[peak.com.m[i],] == 1)[1]
-		whichTime.up.m[i] <- res.top.m$Breakpoints[peak.com.m[i],(keepT)]
-		if (is.na(whichTime.up.m[i])) {whichTime.up.m[i] <- 600}
-	} else {
-	whichTime.up.m[i] <- res.top.m$Breakpoints[peak.com.m[i],(keepT-1)]
-	}
-}
-names(whichTime.up.m) <- peak.com.m
-
-
-peak.com.h <- set1$hgnc_symbol
-whichTime.up.h<-c()
-for(i in 1:length(peak.com.h)) {
-	keepT <- which(res.top.h$Segment.Trends[peak.com.h[i],] != 1)[1]
-	
-	if(is.na(keepT)) {
-		whichTime.up.h[i] <- 600
-	} else if (keepT==1) {
-		keepT <- which(res.top.h$Segment.Trends[peak.com.h[i],] == 1)[1]
-		whichTime.up.h[i] <- res.top.h$Breakpoints[peak.com.h[i],(keepT)]
-		if (is.na(whichTime.up.h[i])) {whichTime.up.h[i] <- 600}
-	} else {
-	whichTime.up.h[i] <- res.top.h$Breakpoints[peak.com.h[i],(keepT-1)]
-	}
-}
-names(whichTime.up.h) <- peak.com.h
-
-
-X = whichTime.up.h
-Y = whichTime.up.m
-
-
-
-pdf("PLOTS/spectrum_EndTimeOfUp_Orthologs.pdf", height=5, width=18)
-par(mar=c(6,3,1,1), mfrow=c(1,1), mgp=c(1,4,0))
-plot(X, rep(2, length(X)), ylim=c(1,5), xlim=c(0,600), yaxt='n', ylab="", xlab="",main="", cex.axis=5)
-rect(par("usr")[1],par("usr")[3],par("usr")[2],par("usr")[4],col = "black")
-points(X, rep(2, length(X)), ylim=c(0,10), xlim=c(0,600), pch=250, font=5, cex=5, col="brown1", bg="black")
-points(Y, rep(4, length(Y)), ylim=c(0,10), pch=250, font=5, cex=5, col="cornflowerblue")
-dev.off()
-
-
-

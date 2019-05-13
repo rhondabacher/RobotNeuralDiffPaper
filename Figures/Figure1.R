@@ -1,153 +1,88 @@
-## All code relevant to Figure 1 plots and numbers:
-
-
 setwd("~/RobotSeq/")
 
+
 load("RDATA/jointPlots_loadDataBoth.Rdata")
-library(Trendy)
-
-# Mouse Plots
-
-res.top <- topTrendy(seg.mouse, .5)
-
-# How many breakpoints happen before 30 minutes?
-sum(res.top$Breakpoint <= 30, na.rm=T)
-# 83
-sum(res.top$Breakpoint <= 100, na.rm=T) #264
-sum(res.top$Breakpoint <= 250, na.rm=T) #738
-
-
-# Heatmap of all genes with an adjusted R^2 >= .5
-library(gplots)
-heatcol <- colorpanel(100, "darkblue", "white", "darkred")
-heatcol2 <- heatcol[c(1:20,seq(21,80,2),81:100)]
-colnames(data.norm.scale) <- t.v
-
-topg <- names(res.top$AdjustedR2)
-MAX.H <- apply(data.norm.scale.m[topg,], 1, which.max)
-data.norm.scale.sort <- data.norm.scale.m[names(sort(MAX.H)),]
-colnames(data.norm.scale.sort) <- t.v
-
-pdf("PLOTS/Mouse_ExprHeatMap_OrderByFirstBreakpoint.pdf", height=10)
-par(mar=c(1,1,1,5), cex.axis=.5, cex.main=.5, cex.lab=.5, cex.sub=.5)
-  heatmap.2(data.norm.scale.sort,
-            trace="none", 
-            Rowv=F,Colv=F,col=heatcol2, cex.main=.5, cex.axis=.5,
-            cexRow=.1, cexCol = .8, key=TRUE, keysize=.5, lwid=c(1,4), lhei=c(1,4))
-dev.off()
-
-
-## Table for supplement:
-tosave <- formatResults(res.top)
-tosave <- tosave[rownames(data.norm.scale.sort), ] #order by time of first breakpoint
-write.table(tosave, file="TABLES/Mouse_Fig1HeatmapGenes.csv", row.names=F, quote=F, sep=",")
 
 
 
+#################################################################################################################
+#################################################################################################################
 
-##################################################
-##################################################
+## Same as what is in Trendy package but wanted to control par directly. 
+## Will add par control directly to the package soon.
 
+fancyPlot <- function(DATA, tVectIn, trendyOutData, featureNames) {
+	plot(tVectIn, DATA[featureNames,], pch=20, col="#696969", main=featureNames, ylab="Scaled Expression", xlab="Minute", 
+	           cex.axis=1.4, cex.lab=1.5, xaxt='n', yaxt='n', cex.main=2)
+  axis(1, at=c(0,200,400,600), cex.lab=1.5, cex.axis=1.5)
+  axis(2, at=c(0,.5,1), cex.lab=1.5, cex.axis=1.5)
+	trendyOutData <- trendyOutData[[featureNames]]
+	lines(tVectIn, trendyOutData$Fitted.Values, lwd = 3, col="#ededed")
+	abline(v = trendyOutData$Breakpoints, lty = 2, lwd = 3, col="chartreuse3")
+	ID <- trendyOutData$Trends
+	FIT <- trendyOutData$Fitted.Values
+	BKS <- c(0, trendyOutData$Breakpoints, max(tVectIn))
+	if (length(BKS) > 3 | (length(BKS) == 3 & !is.na(BKS[2]))) {
+	   for (i in seq_len(length(BKS) - 1)) {
+	       toCol <- which(tVectIn <= BKS[i+1] & tVectIn >= BKS[i])
+	       IDseg <- ID[toCol]
+	       useCol <- switch(names(which.max(table(IDseg))), 
+	       "0" = "black", 
+	       "-1" = "cornflowerblue", 
+	       "1" = "coral1")
+	       lines(tVectIn[toCol], FIT[toCol], lwd = 5, col=useCol)
+	   }} else {
+							   IDseg <- ID[1]
+						       useCol <- switch(names(which.max(table(IDseg))), 
+						       "0" = "black", 
+						       "-1" = "cornflowerblue", 
+						       "1" = "coral1")
+							   	lines(tVectIn, FIT, lwd = 5, col=useCol)
+						   }
 
+}
+################################################################################################################
+################################################################################################################
 
-# Human
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+            featureNames = "Wsb1", 
+            trendyOutData = seg.mouse)
 
-# All genes with an adjusted R^2 >= .5
-res.top <- topTrendy(seg.human, .5)
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+            featureNames = "Tpm1", 
+            trendyOutData = seg.mouse)
 
-# How many breakpoints happen before 30 minutes?
-sum(res.top$Breakpoint <= 30, na.rm=T)
-# 0
-sum(res.top$Breakpoint <= 100, na.rm=T) # 38
-sum(res.top$Breakpoint <= 250, na.rm=T) # 100
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+            featureNames = "Slc30a1", 
+            trendyOutData = seg.mouse)
 
-# Heatmap of all genes with an adjusted R^2 >= .5
-library(gplots)
-heatcol <- colorpanel(100, "darkblue", "white", "darkred")
-heatcol2 <- heatcol[c(1:20,seq(21,80,2),81:100)]
-colnames(data.norm.scale) <- t.v
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+            featureNames = "Eml1", 
+            trendyOutData = seg.mouse)
 
-topg <- names(res.top$AdjustedR2)
-MAX.H <- apply(data.norm.scale.h[topg,], 1, which.max)
-data.norm.scale.sort <- data.norm.scale.h[names(sort(MAX.H)),]
-colnames(data.norm.scale.sort) <- t.v
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+            featureNames = "Bclaf1", 
+            trendyOutData = seg.mouse)
 
-pdf("PLOTS/Human_ExprHeatMap_OrderByFirstBreakpoint.pdf", height=10)
-par(mar=c(1,1,1,5), cex.axis=.5, cex.main=.5, cex.lab=.5, cex.sub=.5)
-  heatmap.2(data.norm.scale.sort,
-            trace="none", 
-            Rowv=F,Colv=F,col=heatcol2, cex.main=.5, cex.axis=.5, 
-            cexRow=.1, cexCol = .8, key=TRUE, keysize=.5, 
-						density.info=c("none"),
-						lwid=c(1,4), lhei=c(1,4))
-dev.off()
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+            featureNames = "Nid1", 
+            trendyOutData = seg.mouse)
 
-## Table for supplement:
-tosave <- formatResults(res.top)
-tosave <- tosave[rownames(data.norm.scale.sort), ] #order by time of first breakpoint
-write.table(tosave, file="TABLES/Human_Fig1HeatmapGenes.csv", row.names=F, quote=F, sep=",")
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+            featureNames = "Gpc4", 
+            trendyOutData = seg.mouse)
 
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+            featureNames = "Apex1", 
+            trendyOutData = seg.mouse)
 
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+            featureNames = "Sept7", 
+            trendyOutData = seg.mouse)
 
-
-###################################################################################################
-###################################################################################################
-###################################################################################################
-
-## Joint plots
-
-# Dynamic genes in common:
-library(Trendy)
-res.top.m <- topTrendy(seg.mouse, .5)
-res.top.h <- topTrendy(seg.human, .5)
-
-sum(res.top.m$Breakpoint <= 30, na.rm=T)
-sum(res.top.m$Breakpoint <= 100, na.rm=T)
-sum(res.top.m$Breakpoint <= 250, na.rm=T)
-
-sum(res.top.h$Breakpoint <= 30, na.rm=T)
-sum(res.top.h$Breakpoint <= 100, na.rm=T)
-sum(res.top.h$Breakpoint <= 250, na.rm=T)
-
-X <- (na.omit(c(res.top.h$Breakpoints)))
-Y <- (na.omit(c(res.top.m$Breakpoints)))
-
-wilcox.test(X,Y)
-PP <- round(wilcox.test(X,Y)$p.value, 3)
-if( PP < .001) {PP <- "< .001"}
-PP
-
-library("yarrr")
-
-X <- data.frame( Breakpoint = X, Species = "Human")
-Y <- data.frame( Breakpoint = Y, Species = "Mouse")
-
-longdata <- rbind(Y, X)
-
-pdf("PLOTS/boxPlot_GenesInFig1_AllBreakpoints.pdf", height=8, width=6)
-par(mar=c(4,6,2,1), mgp = c(4, 1, 0))
-pirateplot(formula = Breakpoint ~ Species,
-           data = longdata,
-           xlab = "", 
-           ylab = "Minute", pal=c("cornflowerblue", "brown1"),
-           main = "", point.cex=1.1, bar.lwd=1, cex.lab=3, cex.axis=2,cex.names=3)
-dev.off()
-
-X <- (na.omit(c(res.top.h$Breakpoints)))
-Y <- (na.omit(c(res.top.m$Breakpoints)))
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+            featureNames = "Myc", 
+            trendyOutData = seg.mouse)
 
 
-pdf("PLOTS/histogram_GenesInFig1_AllBreakpoints.pdf", height=12, width=15)
-par(mar=c(5,5,4,2), mfrow=c(2,1))
-hist(Y, xlim=c(0,600), ylim=c(0,50), 
-	col="cornflowerblue", breaks = seq(0, 600, length.out=100), 
-	ylab="Number of breakpoints", main="", xlab="",border="dodgerblue3", 
-	cex.axis=2, cex.lab=3)
-hist(X, xlim=c(0,600), ylim=c(0,50), 
-	col="brown1", breaks = seq(0, 600, length.out=100), 
-	ylab="Number of breakpoints", main="", xlab="",border="brown3", 
-	cex.axis=2, cex.lab=3)
-dev.off()
-
-
-
+			

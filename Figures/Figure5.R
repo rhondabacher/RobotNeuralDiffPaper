@@ -1,5 +1,6 @@
 setwd("~/RobotSeq/")
 
+
 load("RDATA/jointPlots_loadDataBoth.Rdata")
 
 
@@ -38,7 +39,7 @@ for(i in 1:nrow(peak.com.m)) {
 	}
 	
 }
-names(whichTime.up.m) <- peak.com.m[,1]
+names(whichTime.up.m) <- peak.com.m[,1]  
 
 pcntStart0.h <- mean(whichTime.up.h==0)*100
 pcntStart0.m <- mean(whichTime.up.m==0)*100
@@ -62,6 +63,74 @@ dev.off()
 
 whichTime.up.h.orthopeaks <- whichTime.up.h
 whichTime.up.m.orthopeaks <- whichTime.up.m
+
+
+
+
+
+
+
+
+## For ANY peak genes get the UP slope and DOWN slope
+peak.com.h <- peak_genes.h
+whichTime.up.h<-c()
+for(i in 1:nrow(peak.com.h)) {
+	keep <- which(round(res.top.h$Breakpoints[peak.com.h[i,1],]) == round(c(peak.com.h[i,2])))
+	if(keep == 1) {
+		whichTime.up.h[i] <- 0
+	} else {
+	whichTime.up.h[i] <- res.top.h$Breakpoints[peak.com.h[i,1],(keep-1)]
+	}
+	
+}
+names(whichTime.up.h) <- peak.com.h[,1]
+
+
+peak.com.m <- peak_genes.m
+whichTime.up.m<-c()
+for(i in 1:nrow(peak.com.m)) {
+	keep <- which(round(res.top.m$Breakpoints[peak.com.m[i,1],]) == round(c(peak.com.m[i,2])))
+	if(keep == 1) {
+		whichTime.up.m[i] <- 0
+	} else {
+	whichTime.up.m[i] <- res.top.m$Breakpoints[peak.com.m[i,1],(keep-1)]
+	}
+	
+}
+names(whichTime.up.m) <- peak.com.m[,1]
+
+pcntStart0.h <- mean(whichTime.up.h==0)*100
+pcntStart0.m <- mean(whichTime.up.m==0)*100
+
+# Obviously
+prop.test(c(sum(whichTime.up.h==0), sum(whichTime.up.m==0)), c(length(whichTime.up.h), length(whichTime.up.m)))
+
+
+
+pdf("PLOTS/percent_FirstTime_Up_AnyPeaks_Figure5.pdf", height=6, width=5)
+par(mar=c(3,3,3,1))
+barplot(c(pcntStart0.m, pcntStart0.h, 100-pcntStart0.m, 100-pcntStart0.h),
+space=c(.5,.1,1,.1), col = c("cornflowerblue", "brown1"), names="",
+ylim=c(0,100), cex.axis=2
+)
+legend('topright', c("Mouse","Human"), fill=c("cornflowerblue", "brown1"), cex=2, bty='n')
+dev.off()
+
+
+# Save these for later plot:
+
+whichTime.up.h.anypeaks <- whichTime.up.h
+whichTime.up.m.anypeaks <- whichTime.up.m
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -162,16 +231,13 @@ pdf("PLOTS/percent_MeanOf_FirstTime_Up_Figure5.pdf", height=5, width=18)
 par(mar=c(3,3,3,1))
 barplot(c(mean(upTime_allUP.m), mean(upTime_allUP.h),
 					mean(upTime_commonUP.m), mean(upTime_commonUP.h), 
-					mean(whichTime.up.m.orthopeaks), mean(whichTime.up.h.orthopeaks)), 
-space=c(.5,.1,1,.1, 1, .1), col = c("cornflowerblue", "brown1"), names="",
+					mean(whichTime.up.m.orthopeaks), mean(whichTime.up.h.orthopeaks),
+					mean(whichTime.up.m.anypeaks), mean(whichTime.up.h.anypeaks))), 
+space=c(.5,.1,1,.1, 1, .1, 1, .1), col = c("cornflowerblue", "brown1"), names="",
 ylim=c(0,600), cex.axis=2
 )
 legend('topright', c("Mouse","Human"), fill=c("cornflowerblue", "brown1"), cex=2, bty='n')
 dev.off()
-
-
-
-
 
 
 
