@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 
 # Mouse original and scaled data:
 load("RDATA/normalized_mouseRobot.RDATA")

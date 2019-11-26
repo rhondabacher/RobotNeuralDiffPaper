@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 
 
 load("RDATA/jointPlots_loadDataBoth.Rdata")
@@ -82,7 +82,7 @@ propTestVals <- wilcox.test(X, Y, conf.level = .99, conf.int=TRUE, paired = TRUE
 propTestVals <- round(propTestVals$conf.int[1:2], 0)
 
 library(ggplot2)
-pdf("PLOTS/histogram_peakTime_orthologPeaks_Figure4.pdf", height=3, width=2.5)
+pdf("PLOTS/histogram_peakTime_orthologPeaks_Figure4.pdf", height=3, width=2.5, useDingbats=F, family = "Arial")
 par(mar=c(2.1,2,1,.1), mgp=c(1.2,.5,0))
 hist(X, xlim=c(0,600), ylim=c(0,50), border="brown3",
 	col=alpha("brown1", .6), breaks = seq(0, 600, length.out=20), 
@@ -94,13 +94,13 @@ mtext(bquote("99% CI " ~ Delta~ "M: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVal
 dev.off()
 
 
-pdf("PLOTS/spectrum_peakTime_orthologPeaks_Figure4.pdf", height=2, width=2.5)
+pdf("PLOTS/spectrum_peakTime_orthologPeaks_Figure4.pdf", height=2, width=2.5, useDingbats=F, family = "Arial")
 par(mar=c(2.3,1.3,1,.1), mgp=c(1,.5,0))
 plot(X, rep(2, length(X)), ylim=c(1,5), xlim=c(0,600), yaxt='n', xlab="Minutes", ylab="",main="", cex.axis=.6, cex.lab=.7)
 rect(par("usr")[1],par("usr")[3],par("usr")[2],par("usr")[4],col = "black")
 points(X, rep(2, length(X)), ylim=c(0,10), xlim=c(0,600), pch=250, font=5, cex=.7, col="brown1", bg="black")
 points(Y, rep(4, length(Y)), ylim=c(0,10), pch=250, font=5, cex=.7, col="cornflowerblue")
-axis(2, c("Mouse", "Human"), at= c(1.7,4.2), cex=.7, tick=F)
+axis(2, c("Human", "Mouse"), at= c(1.7,4.2), cex=.7, tick=F)
 dev.off()
 
 # library("yarrr")
@@ -133,7 +133,7 @@ propTestVals <- wilcox.test(X, Y, conf.level = .99, conf.int=TRUE)
 propTestVals <- round(propTestVals$conf.int[1:2], 0)
 
 library(ggplot2)
-pdf("PLOTS/histogram_peakTime_anyPeaks_Figure4.pdf", height=3, width=2.5)
+pdf("PLOTS/histogram_peakTime_anyPeaks_Figure4.pdf", height=3, width=2.5, useDingbats=F, family = "Arial")
 par(mar=c(2.1,2,1,.1), mgp=c(1.2,.5,0))
 hist(X, xlim=c(0,600), ylim=c(0,400), border="brown3",
 	col=alpha("brown1", .6), breaks = seq(0, 600, length.out=20), 
@@ -145,7 +145,6 @@ mtext(bquote("99% CI " ~ Delta~ "M: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVal
 dev.off()
 
 
-
 ############################################################################################################################################################
 
 
@@ -154,16 +153,16 @@ dev.off()
 ## Same as what is in Trendy package but wanted to control par directly. 
 ## Will add par control directly to the package soon.
 
-fancyPlot <- function(DATA, tVectIn, trendyOutData, featureNames) {
+fancyPlot <- function(DATA, tVectIn, trendyOutData, featureNames, ylab="Scaled Expression") {
 	plot(tVectIn, DATA[featureNames,], pch=20, col="#696969", cex=.6,
-  main=featureNames, ylab="Scaled Expression", xlab="Minute", 
+  main=featureNames, ylab=ylab, xlab="Minute", 
 	            cex.lab=1, xaxt='n', yaxt='n', cex.main=1)
   axis(1, at=c(0,200,400,600), cex.axis=1)
   axis(2, at=c(0,.5,1), cex.axis=1)
   if(!is.null(trendyOutData)) {
 	trendyOutData <- trendyOutData[[featureNames]]
 	lines(tVectIn, trendyOutData$Fitted.Values, lwd = 1, col="#ededed")
-	abline(v = trendyOutData$Breakpoints, lty = 2, lwd = 1, col="chartreuse3")
+	abline(v = trendyOutData$Breakpoints, lty = 2, lwd = 2, col="chartreuse3")
 	ID <- trendyOutData$Trends
 	FIT <- trendyOutData$Fitted.Values
 	BKS <- c(0, trendyOutData$Breakpoints, max(tVectIn))
@@ -175,18 +174,19 @@ fancyPlot <- function(DATA, tVectIn, trendyOutData, featureNames) {
 	       "0" = "black", 
 	       "-1" = "cornflowerblue", 
 	       "1" = "coral1")
-	       lines(tVectIn[toCol], FIT[toCol], lwd = 1.5, col=useCol)
+	       lines(tVectIn[toCol], FIT[toCol], lwd = 2, col=useCol)
 	   }} else {
 							   IDseg <- ID[1]
 						       useCol <- switch(names(which.max(table(IDseg))), 
 						       "0" = "black", 
 						       "-1" = "cornflowerblue", 
 						       "1" = "coral1")
-							   	lines(tVectIn, FIT, lwd = 1.5, col=useCol)
+							   	lines(tVectIn, FIT, lwd = 2, col=useCol)
 						   }
              }
 
 }
+
 
 
 m1 <- extractPattern(seg.mouse, .2, Pattern = c("up", "down"), 0)
@@ -199,16 +199,19 @@ toplot1 <- toplot1[1:8,1]
 toplot1.h <- toupper(toplot1)
 
 
-pdf(paste0("PLOTS/OrthologGenes_ExpressionScatter_Fig4.pdf"), height=4, width=4.7, useDingbats=F)
+
+pdf(paste0("PLOTS/OrthologGenes_ExpressionScatter_Fig4.pdf"), height=4, width=5, useDingbats=F, family = "Arial")
 par(mfrow=c(2,4), mar=c(3,2,2,.5), mgp=c(1.1,.4,0))
 for(i in 1:4){
+	if (i == 1) {ylab = "Scaled Expression"} else {ylab=""}
 XX<- fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = toplot1[i], 
+            featureNames = toplot1[i], ylab=ylab,
             trendyOutData = seg.mouse)
 }
 for(i in 1:4){
+		if (i == 1) {ylab = "Scaled Expression"} else {ylab=""}
 XX<- fancyPlot(data.norm.scale.h, tVectIn=t.v.h,
-            featureNames = toplot1.h[i], 
+            featureNames = toplot1.h[i], ylab=ylab,
             trendyOutData = seg.human)
 }
 dev.off()
@@ -260,7 +263,7 @@ toplot1 <- intersect(ieg.m, ortho.peaks[,1])
 toplot1.h <- intersect(ieg.h, ortho.peaks[,2])
 
 
-pdf(paste0("PLOTS/OrthologGenes_ExpressionScatter_IEG_ALL.pdf"), height=4, width=8, useDingbats=F)
+pdf(paste0("PLOTS/OrthologGenes_ExpressionScatter_IEG_ALL.pdf"), height=4, width=8, useDingbats=F, family = "Arial")
 par(mfrow=c(2,4), mar=c(3,2,2,.5), mgp=c(1.1,.4,0))
 for(i in 1:4){
 XX<- fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
@@ -318,17 +321,18 @@ toplot1 <- c("Myc", "Sqstm1", "Adm", "Ubc")
 toplot1.h <- toupper(toplot1)
 
 
-pdf(paste0("PLOTS/OrthologGenes_ExpressionScatter_IEG_Fig4.pdf"), height=4, width=4.7, useDingbats=F)
+pdf(paste0("PLOTS/OrthologGenes_ExpressionScatter_IEG_Fig4.pdf"), height=4, width=5, useDingbats=F, family = "Arial")
 par(mfrow=c(2,4), mar=c(3,2,2,.5), mgp=c(1.1,.4,0))
 for(i in 1:4){
+			if (i == 1) {ylab = "Scaled Expression"} else {ylab=""}
 XX<- fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = toplot1[i], 
+            featureNames = toplot1[i],  ylab=ylab,
             trendyOutData = seg.mouse)
 }
 for(i in 1:4){
+			if (i == 1) {ylab = "Scaled Expression"} else {ylab=""}
 XX<- fancyPlot(data.norm.scale.h, tVectIn=t.v.h,
-            featureNames = toplot1.h[i], 
+            featureNames = toplot1.h[i],  ylab=ylab,
             trendyOutData = seg.human)
 }
 dev.off()
-

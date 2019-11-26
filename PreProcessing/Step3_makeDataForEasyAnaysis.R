@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 library(Trendy)
 
 # Give objects distinct names for mouse and human diff experiments:

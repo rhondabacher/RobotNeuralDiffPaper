@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 
 inData <- read.table("DATA/genes.intron_hg38.tab", comment.char="", header=1, row.names=1, stringsAsFactors = F)
 inData[1:5,1:5]

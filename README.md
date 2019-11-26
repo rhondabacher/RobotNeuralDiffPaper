@@ -6,7 +6,7 @@ This repository contains
 1. Code to reproduce the analyses and figures in "Automated Minute Scale RNA-seq of Pluripotent Stem Cell Differentiation Reveals Early Divergence of Human and Mouse Gene Expression Kinetics". This includes all preprocessing steps and the generation of figures in the main text and supplement. 
 
     * Download datasets from GSE129014 or from S3 File in the manuscript.
-    * Run all codes in the PreProcessing folder in the indicated order. Directory set-up is a main folder called RobotSeq with subfolders: RDATA, PLOTS, and OUT.
+    * Run all codes in the PreProcessing folder in the indicated order. Directory set-up is a main folder called RobotNeuralDiffPaper with subfolders: DATA, RDATA, PLOTS, TABLES, and OUT.
   
 2. The TrendyShiny folder contains files that can be uploaded to the Trendy shiny application for interactive data exploration and analysis.
 
@@ -39,16 +39,16 @@ trendyShiny()
 4. A webpage will open and will ask you to select the file you want to upload. 
 
 
-### For instructions with screenshots see this page: https://github.com/rhondabacher/RobotSeq/blob/master/TrendyShinyInstructions.pdf
+### For instructions with screenshots see this [vignette](https://github.com/rhondabacher/RobotNeuralDiffPaper/blob/master/TrendyShinyInstructions.pdf)
 
 
 
 ### Questions
 
-Any questions may be reported using Github issues: https://github.com/rhondabacher/RobotSeq/issues
+Any questions may be reported using Github issues: https://github.com/rhondabacher/RobotNeuralDiffPaper/issues
 
 or emailing Rhonda Bacher at rbacher@ufl.edu
 
 # License
 
-Licensed under [GPL-3](https://github.com/rhondabacher/RobotSeq/blob/master/LICENSE.md).
+Licensed under [GPL-3](https://github.com/rhondabacher/RobotNeuralDiffPaper/blob/master/LICENSE.md).

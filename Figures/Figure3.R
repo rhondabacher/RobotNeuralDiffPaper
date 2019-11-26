@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 
 load("RDATA/jointPlots_loadDataBoth.Rdata")
 
@@ -38,7 +38,7 @@ X <- data.frame( Breakpoint = X, Species = "Human")
 Y <- data.frame( Breakpoint = Y, Species = "Mouse")
 longdata <- rbind(Y, X)
 
-pdf("PLOTS/boxPlot_AllBreakpoints_anyGenes.pdf", height=3, width=2)
+pdf("PLOTS/boxPlot_AllBreakpoints_anyGenes.pdf", height=2, width=2, useDingbats=F, family = "Arial")
 par(mar=c(1,2.5,1,.1), mgp=c(1.6,.5,0))
 pirateplot(formula = Breakpoint ~ Species,
 	           data = longdata,
@@ -54,7 +54,7 @@ X <- (na.omit(c(res.top.h$Breakpoints)))
 Y <- (na.omit(c(res.top.m$Breakpoints)))
 
 
-pdf("PLOTS/histogram_GenesInFig1_AllBreakpoints.pdf", height=4, width=6)
+pdf("PLOTS/histogram_GenesInFig1_AllBreakpoints.pdf", height=3.5, width=6, useDingbats=F, family = "Arial")
 par(mar=c(2.1,2,1,.1), mgp=c(1.2,.5,0), mfrow=c(2,1))
 hist(Y, xlim=c(0,600), ylim=c(0,500), 
 	col="cornflowerblue", breaks = seq(0, 600, length.out=100), 
@@ -69,7 +69,6 @@ hist(X, xlim=c(0,600), ylim=c(0,400), main="Human", cex.main=.8,
 axis(1, at=c(60, 250), cex.axis=.6, cex.lab=.7)
 abline(v = c(60, 100, 250), lwd=1, lty=2, col="gray60")
 dev.off()
-
 
 
 
@@ -91,17 +90,16 @@ pcntStart0.h <- mean(timeUpDown.h==0)*100
 pcntStart0.m <- mean(timeUpDown.m==0)*100
 
 
-pdf("PLOTS/percent_FirstTime_UpDown_allTrendyGenes_Figure3.pdf", height=3, width=2)
+pdf("PLOTS/percent_FirstTime_UpDown_allTrendyGenes_Figure3.pdf", height=2, width=2, useDingbats=F, family = "Arial")
 par(mar=c(1.5,3,1,.1), mgp=c(2,1,0))
-barplot(c(mean(timeUpDown.h == 0), mean(timeUpDown.m==0), mean(timeUpDown.h > 0), mean(timeUpDown.m > 0))*100,
+barplot(c(mean(timeUpDown.m == 0), mean(timeUpDown.h==0), mean(timeUpDown.m > 0), mean(timeUpDown.h > 0))*100,
 space=c(.5,.1,1,.1), col = c("cornflowerblue", "brown1"), names="", ylab="% Genes", xlab="",
 ylim=c(0,100), cex.axis=.6, cex.lab=.7
 )
-mtext(c("Minute = 0", "Minute > 0"), side=1, at = c(1.5, 4.5), cex=.6)
+mtext(c("Immediate", "Delayed"), side=1, at = c(1.5, 4.5), cex=.6)
 mtext(bquote("99% CI " ~ Delta~ "P%: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVals[2]) ~ ")" ), side=3, at = c(2.5), cex=.6)
 legend('topright', c("Mouse","Human"), fill=c("cornflowerblue", "brown1"), cex=.5, bty='n')
 dev.off()
-
 
  
 onlyDown.m <- sum(apply(res.top.m$Trends[,], 1, function(x) all(x == -1)))
@@ -116,16 +114,19 @@ all.mono.h <- onlyDown.h + onlyUp.h
 propTestVals <- prop.test(c((all.mono.h), (all.mono.m)), c(nrow(res.top.h$Trends), nrow(res.top.m$Trends)), conf.level=.99)
 propTestVals <- round(propTestVals$conf.int[1:2]*100, 3)
 
-pdf("PLOTS/numGenes_Monotonic_allTrendyGenes_Figure.pdf", height=3, width=2)
+pdf("PLOTS/numGenes_Monotonic_allTrendyGenes_Figure.pdf", height=2, width=2, useDingbats=F, family = "Arial")
 par(mar=c(1.5,3,1,.1), mgp=c(2,1,0))
 barplot(c(all.mono.m, all.mono.h),
 space=c(.1), col = c("cornflowerblue", "brown1"), names="", ylab="# Orthologs", xlab="",
-ylim=c(0,2550), cex.axis=.6, cex.lab=.7
+ylim=c(0,2550), cex.axis=.6, cex.lab=.7, yaxt='n'
 )
 mtext(c("Mouse", "Human"), side=1, at = c(.5,1.8), cex=.6)
+axis(2, at=c(0,500,1500,2500), cex.axis=.6)
+axis(2, at=c(0,1000,2000), labels=F, cex.axis=.6)
 legend('topleft', c("Mouse","Human"), fill=c("cornflowerblue", "brown1"), cex=.5, bty='n')
 mtext(bquote("99% CI " ~ Delta~ "P%: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVals[2]) ~ ")" ), side=3, at = c(1), cex=.6)
 dev.off()
+
 
 all.mono.h
 all.mono.m

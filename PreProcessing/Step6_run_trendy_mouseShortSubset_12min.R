@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 
 load("RDATA/normalized_mouseRobot.RDATA")
 dim(data.norm.mouse)

@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 
 
 load("RDATA/jointPlots_loadDataBoth.Rdata")
@@ -10,16 +10,16 @@ load("RDATA/jointPlots_loadDataBoth.Rdata")
 ## Same as what is in Trendy package but wanted to control par directly. 
 ## Will add par control directly to the package soon.
 
-fancyPlot <- function(DATA, tVectIn, trendyOutData, featureNames) {
-	plot(tVectIn, DATA[featureNames,], pch=20, col="#696969", cex=.6,
-  main=featureNames, ylab="Scaled Expression", xlab="Minute", 
+fancyPlot <- function(DATA, tVectIn, trendyOutData, featureNames, ylab="Scaled Expression") {
+	plot(tVectIn, DATA[featureNames,], pch=19, col="#696969", cex=.4,
+  main=featureNames, ylab=ylab, xlab="Minute",
 	            cex.lab=1, xaxt='n', yaxt='n', cex.main=1)
   axis(1, at=c(0,200,400,600), cex.axis=1)
   axis(2, at=c(0,.5,1), cex.axis=1)
   if(!is.null(trendyOutData)) {
 	trendyOutData <- trendyOutData[[featureNames]]
-	lines(tVectIn, trendyOutData$Fitted.Values, lwd = 1, col="#ededed")
-	abline(v = trendyOutData$Breakpoints, lty = 2, lwd = 1, col="chartreuse3")
+	lines(tVectIn, trendyOutData$Fitted.Values, lwd = 1.5, col="#ededed")
+	abline(v = trendyOutData$Breakpoints, lty = 2, lwd = 1.5, col="chartreuse3")
 	ID <- trendyOutData$Trends
 	FIT <- trendyOutData$Fitted.Values
 	BKS <- c(0, trendyOutData$Breakpoints, max(tVectIn))
@@ -31,62 +31,64 @@ fancyPlot <- function(DATA, tVectIn, trendyOutData, featureNames) {
 	       "0" = "black", 
 	       "-1" = "cornflowerblue", 
 	       "1" = "coral1")
-	       lines(tVectIn[toCol], FIT[toCol], lwd = 1, col=useCol)
+	       lines(tVectIn[toCol], FIT[toCol], lwd = 1.5, col=useCol)
 	   }} else {
 							   IDseg <- ID[1]
 						       useCol <- switch(names(which.max(table(IDseg))), 
 						       "0" = "black", 
 						       "-1" = "cornflowerblue", 
 						       "1" = "coral1")
-							   	lines(tVectIn, FIT, lwd = 1, col=useCol)
+							   	lines(tVectIn, FIT, lwd = 1.5, col=useCol)
 						   }
              }
 
 }
 ################################################################################################################ 
 ################################################################################################################
-pdf("PLOTS/Figure1_GeneScatter.pdf", height=3, width=7.5, useDingbats=F)
-par(mfrow=c(2,6), mar=c(3,2,2,.1), mgp=c(1.1,.4,0))
+library(extrafont)
+loadfonts(device = "pdf") 
+
+pdf("PLOTS/Figure1_GeneScatter.pdf", height=4.5, width=5.1, useDingbats=F, family = "Arial")
+par(mfrow=c(3,4), mar=c(3,1.5,2,.5), mgp=c(1.3,.5,0))
 
 fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = "Sept7", 
+            featureNames = "Sept7", ylab="",
             trendyOutData = seg.mouse)
 fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = "Apex1", 
+            featureNames = "Apex1", ylab="",
             trendyOutData = seg.mouse)
 fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = "Nid1", 
-            trendyOutData = seg.mouse)
- 
+            featureNames = "Nid1", ylab="",
+            trendyOutData = seg.mouse) 
 fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-                        featureNames = "Lefty1", 
+                        featureNames = "Lefty1", ylab="",
                         trendyOutData = seg.mouse)  
 
 fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = "Eml1", 
+											featureNames = "Exo1", ylab="",
+										  trendyOutData = seg.mouse)  
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+          featureNames = "Myc", ylab="",
+          trendyOutData = seg.mouse)																								
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+            featureNames = "Gpc4", ylab="",
+            trendyOutData = seg.mouse)
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+              featureNames = "Bclaf1", ylab="",
+              trendyOutData = seg.mouse)																								
+
+
+fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+            featureNames = "Eml1", ylab="",
             trendyOutData = seg.mouse)     
-						            
 fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = "Tpm1", 
+            featureNames = "Tpm1", ylab="",
+            trendyOutData = seg.mouse)
+						fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
+            featureNames = "Slc30a1", ylab="",
             trendyOutData = seg.mouse)
 fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-                        featureNames = "Exo1", 
-                        trendyOutData = seg.mouse)  
-
-fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-          featureNames = "Myc", 
-          trendyOutData = seg.mouse)
-fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = "Gpc4", 
-            trendyOutData = seg.mouse)
-fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-              featureNames = "Bclaf1", 
-              trendyOutData = seg.mouse)
-fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = "Slc30a1", 
-            trendyOutData = seg.mouse)
-fancyPlot(data.norm.scale.m, tVectIn=t.v.m,
-            featureNames = "Fgfbp1", 
+            featureNames = "Fgfbp1", ylab="",
             trendyOutData = seg.mouse)
 dev.off()
 

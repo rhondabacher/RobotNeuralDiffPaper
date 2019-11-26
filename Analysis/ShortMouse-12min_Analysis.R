@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 
 ## This code is the analysis of the subset of mouse cells s/t sampling frequency is 12m
 ## This code generates the figures for Supplementary Figure XX.

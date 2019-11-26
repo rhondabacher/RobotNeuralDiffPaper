@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 
 load("RDATA/jointPlots_loadDataBoth.Rdata")
 load("RDATA/trendy_run_control_Scaled0to1.Rdata")

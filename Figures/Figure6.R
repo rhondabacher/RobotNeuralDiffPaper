@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 
 
 load("RDATA/jointPlots_loadDataBoth.Rdata")
@@ -87,7 +87,7 @@ library("yarrr")
 X <- data.frame( Slope = (whichSlope.up.h), Species = "Human")
 Y <- data.frame( Slope = (whichSlope.up.m), Species = "Mouse")
 longdata <- rbind(Y, X)
-pdf("PLOTS/boxPlot_allPeak_slopeUP_Figure6.pdf", height=2, width=2)
+pdf("PLOTS/boxPlot_allPeak_slopeUP_Figure6.pdf", height=2, width=2, useDingbats=F, family = "Arial")
 par(mar=c(1,2.7,1,.1), mgp=c(2,.5,0))
 pirateplot(formula = Slope ~ Species,
 	           data = longdata, avg.line.fun =median, avg.line.lwd=.8,
@@ -97,6 +97,7 @@ pirateplot(formula = Slope ~ Species,
 mtext(c("Mouse", "Human"), side=1, at = c(1,2), cex=.6)
 mtext(bquote("99% CI " ~ Delta~ "S: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVals[2]) ~ ")" ), side=3, at = c(1.5), cex=.6)
 dev.off()
+
 
 
 X <- whichSlope.down.h
@@ -119,7 +120,7 @@ propTestVals <- round(do.call(c,propTestVals$byout[[1]][2:3]), 3)
 X <- data.frame( Slope = (whichSlope.down.h), Species = "Human")
 Y <- data.frame( Slope = (whichSlope.down.m), Species = "Mouse")
 longdata <- rbind(Y, X)
-pdf("PLOTS/boxPlot_allPeak_slopeDown_Figure6.pdf", height=2, width=2)
+pdf("PLOTS/boxPlot_allPeak_slopeDown_Figure6.pdf", height=2, width=2, useDingbats=F, family = "Arial")
 par(mar=c(1,2.7,1,.1), mgp=c(2,.5,0))
 pirateplot(formula = Slope ~ Species,
 	           data = longdata, avg.line.fun =median, avg.line.lwd=.8,avg.line.o=1,
@@ -197,7 +198,7 @@ propTestVals <- round(do.call(c,propTestVals$byout[[1]][2:3]), 3)
 X <- data.frame( Slope = (whichSlope.up.h), Species = "Human")
 Y <- data.frame( Slope = (whichSlope.up.m), Species = "Mouse")
 longdata <- rbind(Y, X)
-pdf("PLOTS/boxPlot_commonPeak_slopeUp_Figure6.pdf", height=2, width=2)
+pdf("PLOTS/boxPlot_commonPeak_slopeUp_Figure6.pdf", height=2, width=2, useDingbats=F, family = "Arial")
 par(mar=c(1,2.7,1,.1), mgp=c(2,.5,0))
 pirateplot(formula = Slope ~ Species,
 	           data = longdata, avg.line.fun =median, avg.line.lwd=.8,avg.line.o=1,
@@ -228,7 +229,7 @@ propTestVals <- round(do.call(c,propTestVals$byout[[1]][2:3]), 3)
 X <- data.frame( Slope = (whichSlope.down.h), Species = "Human")
 Y <- data.frame( Slope = (whichSlope.down.m), Species = "Mouse")
 longdata <- rbind(Y, X)
-pdf("PLOTS/boxPlot_commonPeak_slopeDown_Figure6.pdf", height=2, width=2)
+pdf("PLOTS/boxPlot_commonPeak_slopeDown_Figure6.pdf", height=2, width=2, useDingbats=F, family = "Arial")
 par(mar=c(1,2.7,1,.1), mgp=c(2,.5,0))
 pirateplot(formula = Slope ~ Species,
 	           data = longdata, avg.line.fun =median, avg.line.lwd=.8,avg.line.o=1,
@@ -238,6 +239,7 @@ pirateplot(formula = Slope ~ Species,
 mtext(c("Mouse", "Human"), side=1, at = c(1,2), cex=.6)
 mtext(bquote("99% CI " ~ Delta~ "S: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVals[2]) ~ ")" ), side=3, at = c(1.5), cex=.6)
 dev.off()
+
 
 
 
@@ -280,7 +282,7 @@ propTestVals <- round(do.call(c,propTestVals$byout[[1]][2:3]), 3)
 X <- data.frame( Slope = (whichSlope.up.h), Species = "Human")
 Y <- data.frame( Slope = (whichSlope.up.m), Species = "Mouse")
 longdata <- rbind(Y, X)
-pdf("PLOTS/boxPlot_commonGenes_slopeUp_Figure6.pdf", height=2, width=2)
+pdf("PLOTS/boxPlot_commonGenes_slopeUp_Figure6.pdf", height=2, width=2, useDingbats=F, family = "Arial")
 par(mar=c(1,2.7,1,.1), mgp=c(2,.5,0))
 pirateplot(formula = Slope ~ Species,
 	           data = longdata, avg.line.fun =median, avg.line.lwd=.8,avg.line.o=1,
@@ -311,7 +313,7 @@ propTestVals <- round(do.call(c,propTestVals$byout[[1]][2:3]), 3)
 X <- data.frame( Slope = (whichSlope.down.h), Species = "Human")
 Y <- data.frame( Slope = (whichSlope.down.m), Species = "Mouse")
 longdata <- rbind(Y, X)
-pdf("PLOTS/boxPlot_commonGenes_slopeDown_Figure6.pdf", height=2, width=2)
+pdf("PLOTS/boxPlot_commonGenes_slopeDown_Figure6.pdf", height=2, width=2, useDingbats=F, family = "Arial")
 par(mar=c(1,2.7,1,.1), mgp=c(2,.5,0))
 pirateplot(formula = Slope ~ Species,
 	           data = longdata, avg.line.fun =median, avg.line.lwd=.8,avg.line.o=1,

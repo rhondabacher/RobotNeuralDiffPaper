@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 
 load("RDATA/jointPlots_loadDataBoth.Rdata")
 
@@ -45,16 +45,18 @@ pcntStart0.m <- mean(whichTime.up.m==0)*100
 propTestVals <- prop.test(c(sum(whichTime.up.h==0), sum(whichTime.up.m==0)), c(length(whichTime.up.h), length(whichTime.up.m)), conf.level=.99)
 propTestVals <- round(propTestVals$conf.int[1:2]*100, 3)
 
-pdf("PLOTS/percent_FirstTime_Up_CommonPeaks_Figure5.pdf", height=2, width=2)
+pdf("PLOTS/percent_FirstTime_Up_CommonPeaks_Figure5.pdf", height=2, width=2, useDingbats=F, family = "Arial")
 par(mar=c(1.5,3,1,.1), mgp=c(2,1,0))
 barplot(c(sum(whichTime.up.m == 0), sum(whichTime.up.h==0), sum(whichTime.up.m > 0), sum(whichTime.up.h > 0)),
 space=c(.5,.1,1,.1), col = c("cornflowerblue", "brown1"), names="", ylab="# Orthologs", xlab="",
-ylim=c(0,150), cex.axis=.6, cex.lab=.7
+ylim=c(0,150), cex.axis=.6, cex.lab=.7, yaxt='n'
 )
-mtext(c("Minute = 0", "Minute > 0"), side=1, at = c(1.5, 4.5), cex=.6)
+axis(2, at=seq(0,150, by=30), cex.axis=.6)
+mtext(c("Immediate", "Delayed"), side=1, at = c(1.5, 4.5), cex=.6)
 mtext(bquote("99% CI " ~ Delta~ "P%: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVals[2]) ~ ")" ), side=3, at = c(2.5), cex=.6)
 legend('topright', c("Mouse","Human"), fill=c("cornflowerblue", "brown1"), cex=.5, bty='n')
 dev.off()
+
 
 
 
@@ -94,7 +96,7 @@ pcntStart0.m <- mean(whichTime.up.m==0)*100
 propTestVals <- prop.test(c(sum(whichTime.up.h==0), sum(whichTime.up.m==0)), c(length(whichTime.up.h), length(whichTime.up.m)), conf.level=.99)
 propTestVals <- round(propTestVals$conf.int[1:2]*100, 3)
 
-pdf("PLOTS/percent_FirstTime_Up_AnyPeaks_Figure5.pdf", height=2, width=2)
+pdf("PLOTS/percent_FirstTime_Up_AnyPeaks_Figure5.pdf", height=2, width=2, useDingbats=F, family = "Arial")
 par(mar=c(1.5,3,1,.1), mgp=c(2,1,0))
 barplot(c(pcntStart0.m, pcntStart0.h),
 space=c(.1), col = c("cornflowerblue", "brown1"), names="", ylab="% Genes", xlab="",
@@ -104,7 +106,6 @@ mtext(c("Mouse", "Human"), side=1, at = c(.5,1.8), cex=.6)
 legend('topright', c("Mouse","Human"), fill=c("cornflowerblue", "brown1"), cex=.5, bty='n')
 mtext(bquote("99% CI " ~ Delta~ "P%: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVals[2]) ~ ")" ), side=3, at = c(1), cex=.6)
 dev.off()
-
 
 
 
@@ -148,17 +149,16 @@ pcntStart0.m <- mean(upbp.m==0)*100
 propTestVals <- prop.test(c(sum(upbp.h==0), sum(upbp.m==0)), c(length(upbp.h), length(upbp.m)), conf.level=.99)
 propTestVals <- round(propTestVals$conf.int[1:2]*100, 3)
 
-pdf("PLOTS/percent_FirstTime_Up_CommonUP_Figure5.pdf", height=2, width=2)
+pdf("PLOTS/percent_FirstTime_Up_CommonUP_Figure5.pdf", height=2, width=2, useDingbats=F, family = "Arial")
 par(mar=c(1.5,3,1,.1), mgp=c(2,1,0))
 barplot(c(sum(upbp.m == 0), sum(upbp.h==0), sum(upbp.m > 0), sum(upbp.h > 0)),
 space=c(.5,.1,1,.1), col = c("cornflowerblue", "brown1"), names="", ylab="# Orthologs", xlab="",
 ylim=c(0,300), cex.axis=.6, cex.lab=.7
 )
-mtext(c("Minute = 0", "Minute > 0"), side=1, at = c(1.5, 4.5), cex=.6)
+mtext(c("Immediate", "Delayed"), side=1, at = c(1.5, 4.5), cex=.6)
 mtext(bquote("99% CI " ~ Delta~ "P%: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVals[2]) ~ ")" ), side=3, at = c(2.5), cex=.6)
 legend('topright', c("Mouse","Human"), fill=c("cornflowerblue", "brown1"), cex=.5, bty='n')
 dev.off()
-
 
 
 ############### ALL UP GENES:
@@ -191,7 +191,7 @@ pcntStart0.m <- mean(upbp.m==0)*100
 propTestVals <- prop.test(c(sum(upbp.h==0), sum(upbp.m==0)), c(length(upbp.h), length(upbp.m)), conf.level=.99)
 propTestVals <- round(propTestVals$conf.int[1:2]*100, 3)
 
-pdf("PLOTS/percent_FirstTime_Up_allUP_Figure5.pdf", height=2, width=2)
+pdf("PLOTS/percent_FirstTime_Up_allUP_Figure5.pdf",  height=2, width=2, useDingbats=F, family = "Arial")
 par(mar=c(1.5,3,1,.1), mgp=c(2,1,0))
 barplot(c(pcntStart0.m, pcntStart0.h),
 space=c(.1), col = c("cornflowerblue", "brown1"), names="", ylab="% Genes", xlab="",

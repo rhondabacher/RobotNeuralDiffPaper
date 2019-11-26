@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 
 
 
@@ -61,16 +61,17 @@ pcntStart0.m <- mean(timeUpDown.m==0)*100
 propTestVals <-prop.test(c(sum(timeUpDown.h==0), sum(timeUpDown.m==0)), c(length(timeUpDown.h), length(timeUpDown.m)), conf.level=.99)
 propTestVals <- round(propTestVals$conf.int[1:2]*100, 2)
 
-pdf("PLOTS/percent_FirstTime_UpDown_allTrendyGenes_Figure2_Orthologs.pdf", height=2, width=2)
-par(mar=c(1.5,3,1,.1), mgp=c(2,1,0))
-barplot(c(sum(timeUpDown.h == 0), sum(timeUpDown.m==0), sum(timeUpDown.h > 0), sum(timeUpDown.m > 0)),
+pdf("PLOTS/percent_FirstTime_UpDown_allTrendyGenes_Figure2_Orthologs.pdf", height=1.5, width=1.25, useDingbats=F, family = "Arial")
+par(mar=c(1,2,1,.1), mgp=c(1.2,.5,0))
+barplot(c(sum(timeUpDown.m == 0), sum(timeUpDown.h==0), sum(timeUpDown.m > 0), sum(timeUpDown.h > 0)),
 space=c(.5,.1,1,.1), col = c("cornflowerblue", "brown1"), names="", ylab="# Orthologs", xlab="",
-ylim=c(0,1500), cex.axis=.6, cex.lab=.7
+ylim=c(0,1500), cex.axis=.4, cex.lab=.5
 )
-mtext(c("Minute = 0", "Minute > 0"), side=1, at = c(1.5, 4.5), cex=.6)
-mtext(bquote("99% CI " ~ Delta~ "P%: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVals[2]) ~ ")" ), side=3, at = c(2.5), cex=.6)
-legend('topright', c("Mouse","Human"), fill=c("cornflowerblue", "brown1"), cex=.5, bty='n')
+mtext(c("Immediate", "Delayed"), side=1, at = c(1.5, 4.5), cex=.5)
+mtext(bquote("99% CI " ~ Delta~ "P%: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVals[2]) ~ ")"), side=3, at = c(2.5), cex=.4)
+legend('topright', c("Mouse","Human"), fill=c("cornflowerblue", "brown1"), cex=.4, bty='n')
 dev.off()
+
 
 
 
@@ -89,15 +90,15 @@ all.mono.h <- onlyDown.h + onlyUp.h
 propTestVals <- prop.test(c((all.mono.h), (all.mono.m)), c(length(ortho.genes.use$mgi_symbol), length(ortho.genes.use$mgi_symbol)), conf.level=.99)
 propTestVals <- round(propTestVals$conf.int[1:2]*100, 2)
 
-pdf("PLOTS/numGenes_Monotonic_allTrendyGenes_Figure2_Orthologs.pdf", height=2, width=2)
-par(mar=c(1.5,3,1,.1), mgp=c(2,1,0))
+pdf("PLOTS/numGenes_Monotonic_allTrendyGenes_Figure2_Orthologs.pdf", height=1.5, width=1.25, useDingbats=F, family = "Arial")
+par(mar=c(1,2,1,.1), mgp=c(1.2,.5,0))
 barplot(c(all.mono.m, all.mono.h),
 space=c(.1), col = c("cornflowerblue", "brown1"), names="", ylab="# Orthologs", xlab="",
-ylim=c(0,850), cex.axis=.6, cex.lab=.7
+ylim=c(0,850), cex.axis=.4, cex.lab=.5
 )
-mtext(c("Mouse", "Human"), side=1, at = c(.5,1.8), cex=.6)
-legend('topleft', c("Mouse","Human"), fill=c("cornflowerblue", "brown1"), cex=.5, bty='n')
-mtext(bquote("99% CI " ~ Delta~ "P%: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVals[2]) ~ ")" ), side=3, at = c(1), cex=.6)
+mtext(c("Mouse", "Human"), side=1, at = c(.5,1.8), cex=.5)
+legend('topleft', c("Mouse","Human"), fill=c("cornflowerblue", "brown1"), cex=.4, bty='n')
+mtext(bquote("99% CI " ~ Delta~ "P%: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVals[2]) ~ ")" ), side=3, at = c(1), cex=.4)
 dev.off()
 
 all.mono.h
@@ -139,23 +140,24 @@ propTestVals <- wilcox.test(X, Y, conf.level = .99, conf.int=TRUE, paired = TRUE
 propTestVals <- round(propTestVals$conf.int[1:2], 0)
 
 
-pdf("PLOTS/histogram_firstBreakpoint_Orthologs_Figure2.pdf", height=2, width=3)
-par(mar=c(2.1,2,1,.1), mgp=c(1.2,.5,0))
+pdf("PLOTS/histogram_firstBreakpoint_Orthologs_Figure2.pdf", height=1.5, width=2.5, useDingbats=F, family = "Arial")
+par(mar=c(2,2,1,.1), mgp=c(1.2,.4,0))
 hist(X, xlim=c(0,600), ylim=c(0,300), border="brown3",
 	col=alpha("brown1", .6), breaks = seq(0, 600, length.out=20), 
-	main="", xlab="Minute",
-	cex.axis=.6, cex.lab=.7)
+	main="", xlab="Minute", yaxt='n',
+	cex.axis=.4, cex.lab=.5)
 hist(Y, add=T,  col=alpha("cornflowerblue", .6), border="dodgerblue3", breaks = seq(0, 600, length.out=20))
-legend('topright', c("Mouse","Human"), fill=c(alpha("cornflowerblue", .6), alpha("brown1", .6)), cex=.5)
+axis(2, at=seq(0,300, by=100), cex.axis=.4)
+legend('topright', c("Mouse","Human"), fill=c(alpha("cornflowerblue", .6), alpha("brown1", .6)), cex=.4)
 dev.off()
 
-pdf("PLOTS/spectrum_firstBreakpoint_Orthologs_Figure2.pdf", height=2, width=4.2)
-par(mar=c(2.3,1.5,1,.1), mgp=c(1,.5,0))
-plot(X, rep(2, length(X)), ylim=c(1,5), xlim=c(0,600), yaxt='n', xlab="Minutes", ylab="",main="", cex.axis=.6, cex.lab=.7)
+pdf("PLOTS/spectrum_firstBreakpoint_Orthologs_Figure2.pdf", height=1.5, width=3, useDingbats=F, family = "Arial")
+par(mar=c(2,1.5,1,.1), mgp=c(1,.3,0))
+plot(X, rep(2, length(X)), ylim=c(1,5), xlim=c(0,600), yaxt='n', xlab="Minutes", ylab="",main="", cex.axis=.4, cex.lab=.5)
 rect(par("usr")[1],par("usr")[3],par("usr")[2],par("usr")[4],col = "black")
-points(X, rep(2, length(X)), ylim=c(0,10), xlim=c(0,600), pch=250, font=5, cex=.7, col="brown1", bg="black")
-points(Y, rep(4, length(Y)), ylim=c(0,10), pch=250, font=5, cex=.7, col="cornflowerblue")
-axis(2, c("Mouse", "Human"), at= c(1.7,4.2), cex=.7, tick=F)
+points(X, rep(2, length(X)), ylim=c(0,10), xlim=c(0,600), pch=250, font=5, cex=.5, col="brown1", bg="black")
+points(Y, rep(4, length(Y)), ylim=c(0,10), pch=250, font=5, cex=.5, col="cornflowerblue")
+axis(2, c("Human", "Mouse"), at= c(1.7,4), cex.axis=.5, tick=F)
 dev.off()
 
 library("yarrr")
@@ -165,16 +167,17 @@ Y <- data.frame( Minute = Y, Species = "Mouse")
 
 longdata <- rbind(Y, X)
 
-pdf("PLOTS/boxPlot_firstBreakpoint_Orthologs_Figure2.pdf", height=2, width=2.5)
-par(mar=c(1,2.5,1,.1), mgp=c(1.6,.5,0))
+pdf("PLOTS/boxPlot_firstBreakpoint_Orthologs_Figure2.pdf", height=1.5, width=2, useDingbats=F, family = "Arial")
+par(mar=c(1,2.5,1,.1), mgp=c(1.2,.5,0))
 pirateplot(formula = Minute ~ Species,
 	           data = longdata, avg.line.fun =median, avg.line.lwd=.8,avg.line.o=1,
 	           xlab = "", inf.b.o = .5, point.o = .5, bar.f.o = 0, bean.f.o = 1,
-	           ylab = "Slope", pal=c("cornflowerblue", "brown1"),inf.method = "iqr",
-	           main = "", point.cex=.3,cex.lab=.7, cex.axis=.6,cex.names=.7)
-mtext(c("Mouse", "Human"), side=1, at = c(1,2), cex=.6)
-mtext(bquote("99% CI " ~ Delta~ "M: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVals[2]) ~ ")" ), side=3, at = c(1.5), cex=.6)
+	           ylab = "Minute", pal=c("cornflowerblue", "brown1"),inf.method = "iqr",
+	           main = "", point.cex=.3,cex.lab=.7, cex.axis=.4,cex.names=.5)
+mtext(c("Mouse", "Human"), side=1, at = c(1,2), cex=.5)
+mtext(bquote("99% CI " ~ Delta~ "M: ("~ .(propTestVals[1]) ~ ", "~ .(propTestVals[2]) ~ ")" ), side=3, at = c(1.5), cex=.5)
 dev.off()
+
 
 
 ########################################################################################################

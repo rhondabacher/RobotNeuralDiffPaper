@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 
 # Data from previously published Barry et al. 2017 in GEO: GSE90053
 

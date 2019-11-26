@@ -1,4 +1,4 @@
-setwd("~/RobotSeq/")
+setwd("~/RobotNeuralDiffPaper/")
 
 ## Normalized and process the mouse and human differentiation time-course datasets.
 
